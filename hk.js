@@ -34,17 +34,27 @@ browserWillBeLaunchedPromise.then(function (browserInstance) {
     return typePasswordPromise
 }).then(function() {
     let loginPromise = page.click('button[data-analytics="LoginPassword"]')
-    return loginLink
+    return loginPromise
 }).then(function (){
     let algoWillBeClickedPromise = waitAndClick('.topic-card a[ data-attr1="algorithms"]',page)
+    return algoWillBeClickedPromise;
+}).then(function(){
+    let getToWarmUpPromise = waitAndClick('input[value="warmup"]',page)
+    return getToWarmUpPromise;
+}).then(function(){
+    let ChallangesArr = page.$$('.ui-btn.ui-btn-normal.primary-cta.ui-btn-line-primary.ui-btn-styled',{delay :105})
+    return ChallangesArr
+}).then(function(questionsArr){
+    console.log("No of questions " + questionsArr.length)
 })
 
-
+//we are waiting and thenn clicking as 1st page has login page then after clicking loader will load and befor it we try to find any slector then itwill
+//will not found since page is not loaded
 function waitAndClick(selector, currentPage){
-    return new Promise(function(reolve, reject){
+    return new Promise(function(resolve, reject){
         let waitForModelPromise = currentPage.waitForSelector(selector);
         waitForModelPromise.then(function(){
-            let clickModel = currentPage.click(selector , {delay: 100})
+            let clickModel = currentPage.click(selector , {delay: 120})
             return clickModel
         }).then(function(){
             resolve()
