@@ -1,7 +1,10 @@
 const loginLink = "https://www.hackerrank.com/auth/login";
 
+
  let email = 'sexod45066@plexfirm.com'
  let password = 'pepcoding@123'
+  
+ const codeFile = require('./codesans')
 
 
 let puppeteer = require("puppeteer");
@@ -46,6 +49,9 @@ browserWillBeLaunchedPromise.then(function (browserInstance) {
     return ChallangesArr
 }).then(function(questionsArr){
     console.log("No of questions " + questionsArr.length)
+    
+    let questionWillBeSolved = questionSolver(page,questionsArr[0], codeFile.answers[0] )
+    
 })
 
 //we are waiting and thenn clicking as 1st page has login page then after clicking loader will load and befor it we try to find any slector then itwill
@@ -60,6 +66,16 @@ function waitAndClick(selector, currentPage){
             resolve()
         }).catch(function(){
             reject()
+        })
+    })
+}
+
+
+function questionSolver(page, question, answer){
+    return new Promise(function(resolve, reject){
+        let questionWillBeClickedPromise = question.click()
+        questionWillBeClickedPromise.then(function(){
+            console.log('question will be clicked')
         })
     })
 }
