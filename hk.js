@@ -8,7 +8,8 @@ let puppeteer = require("puppeteer");
 
 console.log("before");
 
- let page 
+ let page //coz we will open multiple page in site and different page will have different html
+ 
 
 let browserWillBeLaunchedPromise = puppeteer.launch({
   headless: false,
@@ -34,7 +35,21 @@ browserWillBeLaunchedPromise.then(function (browserInstance) {
 }).then(function() {
     let loginPromise = page.click('button[data-analytics="LoginPassword"]')
     return loginLink
+}).then(function (){
+    let algoWillBeClickedPromise = waitAndClick('.topic-card a[ data-attr1="algorithms"]',page)
 })
 
 
-console.log("after");
+function waitAndClick(selector, currentPage){
+    return new Promise(function(reolve, reject){
+        let waitForModelPromise = currentPage.waitForSelector(selector);
+        waitForModelPromise.then(function(){
+            let clickModel = currentPage.click(selector , {delay: 100})
+            return clickModel
+        }).then(function(){
+            resolve()
+        }).catch(function(){
+            reject()
+        })
+    })
+}
