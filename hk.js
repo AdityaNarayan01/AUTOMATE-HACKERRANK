@@ -96,7 +96,14 @@ function questionSolver(page, question, answer) {
     let questionWillBeClickedPromise = question.click();
     questionWillBeClickedPromise
       .then(function () {
-        return waitAndClick('.checkbox-wrap input[type="checkbox"]', page);
+        let waitForEditorPromise = waitAndClick(
+          ".monaco-editor.no-user-select.vs",
+          page
+        );
+        return waitForEditorPromise;
+      })
+      .then(function () {
+        return waitAndClick(".checkbox-input", page);
       })
       .then(function () {
         return page.waitForSelector(".text-area.custominput");
@@ -105,23 +112,52 @@ function questionSolver(page, question, answer) {
         return page.type(".text-area.custominput", answer, { delay: 20 });
       })
       .then(function () {
-        console.log("types ans in input section");
-      })
-      .then(function(){
-        let crtlIsPressedPromised = page.keyboard.down('Control')
-        return crtlIsPressedPromised
+        let ctrlonHoldPromise = page.keyboard.down("Control");
+        return ctrlonHoldPromise;
       })
       .then(function () {
-        let ctrlIsPressedPromise = page.keyboard.down('Control');
-        return ctrlIsPressedPromise
-      }).then(function(){
-        let AisPressedPromise = page.keyboard.press('A' , {delay : 20});
-        return AisPressedPromise
-      }).then(function(){
-         let XisPressedPromise = page.keyboard.press('X' , {delay:20})
-         return XisPressedPromise
-      }).then(function(){
-        console.log('Cut Implemented')
+        let AisPressedPromise = page.keyboard.press("A", { delay: 20 });
+        return AisPressedPromise;
       })
+      .then(function () {
+        let XisPressedPromise = page.keyboard.press("X", { delay: 20 });
+        return XisPressedPromise;
+      })
+      .then(function () {
+        let ctrlIsReleasedPromise = page.keyboard.up("Control");
+        return ctrlIsReleasedPromise;
+      })
+      .then(function () {
+        let waitForEditorPromise = waitAndClick(
+          ".monaco-editor.no-user-select.vs",
+          page
+        );
+        return waitForEditorPromise;
+      })
+      .then(function () {
+        let ctrlonHoldPromise = page.keyboard.down("Control");
+        return ctrlonHoldPromise;
+      })
+      .then(function () {
+        let AisPressedPromise = page.keyboard.press("A", { delay: 20 });
+        return AisPressedPromise;
+      })
+      .then(function () {
+        let VisPressedPromise = page.keyboard.press("V", { delay: 20 });
+        return VisPressedPromise;
+      })
+      .then(function () {
+        let ctrlIsReleasedPromise = page.keyboard.up("Control");
+        return ctrlIsReleasedPromise;
+      })
+      .then(function () {
+        return page.click(".hr-monaco__run-code", { delay: 20 });
+      })
+      .then(function () {
+        resolve();
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
   });
 }
